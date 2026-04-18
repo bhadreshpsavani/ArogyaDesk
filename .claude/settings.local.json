@@ -11,7 +11,8 @@
       "Bash(pip install *)",
       "Bash(python3 -c \"from PIL import Image; print\\('ok'\\)\")",
       "Bash(pip3 install *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(node -e \"require\\('adm-zip'\\); console.log\\('ok'\\)\")"
     ]
   }
 }

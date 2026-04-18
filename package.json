@@ -1,6 +1,7 @@
 {
   "name": "arogyadesk",
   "version": "0.1.7",
+  "license": "MIT",
   "description": "Doctor's clinic desktop application",
   "main": "electron/main.js",
   "scripts": {
