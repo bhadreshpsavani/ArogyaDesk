@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use ArogyaDesk in your work, please cite it using the following metadata."
+type: software
+title: ArogyaDesk
+abstract: >
+  Offline-first clinic management desktop application for solo doctors.
+  Manages patient records, visit history, prescriptions, billing, and PDF receipts.
+  Built with Electron, React, and SQLite. Runs entirely on Windows without internet access.
+authors:
+  - family-names: Savani
+    given-names: Bhadresh
+    email: bhadreshpsavani@gmail.com
+    orcid: ""
+repository-code: https://github.com/bhadreshpsavani/ArogyaDesk
+url: https://github.com/bhadreshpsavani/ArogyaDesk
+license: MIT
+version: 0.1.7
+keywords:
+  - clinic management
+  - patient records
+  - electronic health records
+  - offline
+  - electron
+  - sqlite
+  - healthcare
+  - india
+  - doctor
+  - desktop application

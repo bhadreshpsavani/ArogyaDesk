@@ -2,7 +2,36 @@
   "name": "arogyadesk",
   "version": "0.1.7",
   "license": "MIT",
-  "description": "Doctor's clinic desktop application",
+  "description": "Offline-first clinic management desktop app for solo doctors — patient records, visit history, prescriptions, billing, and PDF receipts. Built with Electron, React, and SQLite.",
+  "keywords": [
+    "clinic-management",
+    "patient-records",
+    "electronic-health-records",
+    "ehr",
+    "doctor",
+    "healthcare",
+    "offline",
+    "electron",
+    "sqlite",
+    "windows",
+    "medical",
+    "prescription",
+    "india",
+    "arogyadesk"
+  ],
+  "author": {
+    "name": "Bhadresh Savani",
+    "email": "bhadreshpsavani@gmail.com",
+    "url": "https://github.com/bhadreshpsavani"
+  },
+  "homepage": "https://github.com/bhadreshpsavani/ArogyaDesk#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bhadreshpsavani/ArogyaDesk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bhadreshpsavani/ArogyaDesk/issues"
+  },
   "main": "electron/main.js",
   "scripts": {
     "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",

@@ -1,0 +1,66 @@
+# ArogyaDesk
+
+> Offline-first clinic management desktop app for solo doctors — built with Electron, React, and SQLite.
+
+ArogyaDesk is a free, open-source Windows desktop application that helps a single doctor manage patient records, visit history, prescriptions, and billing entirely offline. No cloud account, no subscription, no internet required. Patient data stays on the doctor's own computer.
+
+## Core capabilities
+
+- Patient registration and search (by name or phone)
+- Visit history per patient — symptoms, diagnosis, prescription notes, charges, discounts
+- PDF receipt export per visit
+- Doctor and clinic profile setup
+- Attach local files (prescriptions, reports) to visits
+- Backup and restore of the local SQLite database
+
+## Tech stack
+
+- **Electron** (v29) — desktop shell and main process
+- **React 18 + Vite** — renderer/UI
+- **better-sqlite3** — synchronous local SQLite database
+- **react-router-dom v6** — client-side routing via HashRouter
+- **electron-builder** — Windows NSIS installer packaging
+
+## Source layout
+
+- `electron/main.js` — Electron main process, IPC handlers, PDF generation, backup/restore
+- `electron/preload.js` — Context bridge exposing `window.electronAPI` to the renderer
+- `electron/database.js` — SQLite schema definition and all DB query functions
+- `src/App.jsx` — Route definitions
+- `src/pages/` — Screen-level React components (Home, NewPatient, PatientProfile)
+- `src/components/` — Reusable UI (PatientCard, VisitForm, VisitHistory, EditPatientModal)
+- `src/pdfTemplate.js` — HTML template used for PDF receipt generation
+
+## IPC API (window.electronAPI)
+
+Patients: `searchPatients`, `getAllPatients`, `getPatient`, `createPatient`, `updatePatient`, `deletePatient`
+
+Visits: `getVisitsByPatient`, `getVisit`, `createVisit`, `updateVisit`, `deleteVisit`
+
+Doctor: `getDoctorProfile`, `saveDoctorProfile`
+
+Files: `selectFile`, `openFile`, `readImageAsBase64`
+
+PDF: `generatePdf`
+
+Backup: `backupDatabase`, `restoreDatabase`
+
+## Database schema
+
+- `patients` — id, name, age, gender, phone, address, photo_path, notes, created_at
+- `visits` — id, patient_id, visit_date, symptoms, diagnosis, prescription, prescription_path, charges, discount, final_amount, notes, created_at
+- `doctor_profile` — id, name, clinic_name, specialization, phone, address, photo_path
+
+## Development
+
+```bash
+npm install
+npm run dev      # Vite dev server + Electron
+npm run dist     # Build Windows installer (outputs to dist-electron/)
+```
+
+Requires Node.js 20+. Uses `electron-builder install-app-deps` postinstall for native module alignment.
+
+## License
+
+MIT — free to use, fork, and distribute.
