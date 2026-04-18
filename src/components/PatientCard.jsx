@@ -26,9 +26,9 @@ export default function PatientCard({ patient, onClick }) {
         <div className={styles.name}>{patient.name}</div>
         <div className={styles.meta}>
           {patient.age && <span>{patient.age}y</span>}
-          {patient.age && patient.gender && <span className={styles.dot}>·</span>}
+          {patient.age && patient.gender && <span className={styles.dot}>-</span>}
           {patient.gender && <span>{patient.gender}</span>}
-          {(patient.age || patient.gender) && patient.phone && <span className={styles.dot}>·</span>}
+          {(patient.age || patient.gender) && patient.phone && <span className={styles.dot}>-</span>}
           {patient.phone && <span>{patient.phone}</span>}
         </div>
         <div className={styles.footer}>

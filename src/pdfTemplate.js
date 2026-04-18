@@ -66,7 +66,7 @@ export function buildReceiptHtml({ doctor, patient, visit }) {
     <div class="section-title">Patient Details</div>
     <table>
       ${row('Name', patient?.name)}
-      ${row('Age / Gender', [patient?.age ? patient.age + ' years' : '', patient?.gender].filter(Boolean).join(' · '))}
+      ${row('Age / Gender', [patient?.age ? patient.age + ' years' : '', patient?.gender].filter(Boolean).join(' - '))}
       ${row('Phone', patient?.phone)}
       ${row('Address', patient?.address)}
     </table>

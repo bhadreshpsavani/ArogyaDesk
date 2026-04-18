@@ -31,9 +31,14 @@ export default function EditDoctorModal({ doctor, onSave, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.name.trim()) { setError('Name is required'); return }
+    if (!form.name.trim()) {
+      setError('Name is required')
+      return
+    }
+
     setSaving(true)
     setError('')
+
     try {
       const updated = await window.electronAPI.saveDoctorProfile({
         name: form.name.trim(),
@@ -55,7 +60,7 @@ export default function EditDoctorModal({ doctor, onSave, onClose }) {
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
           <h3>Edit Profile</h3>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Close">x</button>
         </div>
 
         <form className={styles.modalBody} onSubmit={handleSubmit}>
@@ -63,16 +68,23 @@ export default function EditDoctorModal({ doctor, onSave, onClose }) {
             <div
               onClick={pickPhoto}
               style={{
-                width: 80, height: 80, borderRadius: '50%',
-                border: '2px dashed var(--border)', cursor: 'pointer',
-                overflow: 'hidden', display: 'flex', alignItems: 'center',
-                justifyContent: 'center', background: 'var(--bg)', transition: 'border-color 0.15s',
+                width: 80,
+                height: 80,
+                borderRadius: '50%',
+                border: '2px dashed var(--border)',
+                cursor: 'pointer',
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'var(--bg)',
+                transition: 'border-color 0.15s',
               }}
             >
               {form.photo_path ? (
                 <LocalImage filePath={form.photo_path} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
-                <span style={{ fontSize: 28 }}>👨‍⚕️</span>
+                <span style={{ fontSize: 16 }}>Doctor</span>
               )}
             </div>
           </div>
@@ -90,7 +102,7 @@ export default function EditDoctorModal({ doctor, onSave, onClose }) {
           <div className="form-group">
             <label>Specialization</label>
             <select className="form-control" value={form.specialization} onChange={set('specialization')}>
-              <option value="">Select…</option>
+              <option value="">Select...</option>
               {SPECIALIZATIONS.map((s) => <option key={s}>{s}</option>)}
             </select>
           </div>
@@ -102,7 +114,7 @@ export default function EditDoctorModal({ doctor, onSave, onClose }) {
 
           <div className="form-group">
             <label>Clinic Address</label>
-            <textarea className="form-control" rows={2} value={form.address} onChange={set('address')} placeholder="123, Main Street…" />
+            <textarea className="form-control" rows={2} value={form.address} onChange={set('address')} placeholder="123, Main Street..." />
           </div>
 
           {error && (
@@ -114,7 +126,7 @@ export default function EditDoctorModal({ doctor, onSave, onClose }) {
           <div className={styles.modalFooter}>
             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
             <button type="submit" className="btn btn-primary" disabled={saving}>
-              {saving ? 'Saving…' : 'Save Changes'}
+              {saving ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>

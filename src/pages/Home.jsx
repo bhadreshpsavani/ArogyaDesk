@@ -24,9 +24,8 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    search('')
     window.electronAPI.getDoctorProfile().then(setDoctor)
-  }, [search])
+  }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => search(query), 250)
@@ -40,7 +39,7 @@ export default function Home() {
     <div className={styles.page}>
       <header className={styles.header}>
         <div className={styles.brand}>
-          <span className={styles.brandIcon}>🏥</span>
+          <span className={styles.brandIcon}>Clinic</span>
           <div>
             <h1 className={styles.brandName}>ArogyaDesk</h1>
             {doctor?.clinic_name && (
@@ -64,7 +63,7 @@ export default function Home() {
                 <span className={styles.doctorSpec}>{doctor.specialization}</span>
               )}
             </div>
-            <span className={styles.editIcon}>✎</span>
+            <span className={styles.editIcon}>Edit</span>
           </button>
         )}
       </header>
@@ -72,17 +71,17 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.toolbar}>
           <div className={styles.searchWrap}>
-            <span className={styles.searchIcon}>🔍</span>
+            <span className={styles.searchIcon}>Search</span>
             <input
               className={styles.searchInput}
               type="text"
-              placeholder="Search by name or phone number…"
+              placeholder="Search by name or phone number..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               autoFocus
             />
             {query && (
-              <button className={styles.clearBtn} onClick={() => setQuery('')}>✕</button>
+              <button className={styles.clearBtn} onClick={() => setQuery('')} aria-label="Clear search">x</button>
             )}
           </div>
           <button
@@ -95,13 +94,13 @@ export default function Home() {
 
         <div className={styles.resultsHeader}>
           <span className={styles.resultsCount}>
-            {loading ? 'Searching…' : `${patients.length} patient${patients.length !== 1 ? 's' : ''}${query ? ` for "${query}"` : ''}`}
+            {loading ? 'Searching...' : `${patients.length} patient${patients.length !== 1 ? 's' : ''}${query ? ` for "${query}"` : ''}`}
           </span>
         </div>
 
         {!loading && patients.length === 0 ? (
           <div className="empty-state">
-            <div className="icon">👤</div>
+            <div className="icon">Patient</div>
             <p>{query ? `No patients found for "${query}"` : 'No patients yet'}</p>
             <small>{query ? 'Try a different name or phone number' : 'Add your first patient to get started'}</small>
             {!query && (

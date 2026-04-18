@@ -8,7 +8,7 @@ const GENDERS = ['Male', 'Female', 'Other']
 export default function NewPatient() {
   const navigate = useNavigate()
   const [form, setForm] = useState({
-    name: '', age: '', gender: '', phone: '', address: '', photo_path: '', notes: ''
+    name: '', age: '', gender: '', phone: '', address: '', photo_path: '', notes: '',
   })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -17,20 +17,25 @@ export default function NewPatient() {
 
   const pickPhoto = async () => {
     const path = await window.electronAPI.selectFile({
-      filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'webp'] }]
+      filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'webp'] }],
     })
     if (path) setForm((f) => ({ ...f, photo_path: path }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.name.trim()) { setError('Patient name is required'); return }
+    if (!form.name.trim()) {
+      setError('Patient name is required')
+      return
+    }
+
     setSaving(true)
     setError('')
+
     try {
       const patient = await window.electronAPI.createPatient({
         name: form.name.trim(),
-        age: form.age ? parseInt(form.age) : null,
+        age: form.age ? parseInt(form.age, 10) : null,
         gender: form.gender || null,
         phone: form.phone.trim() || null,
         address: form.address.trim() || null,
@@ -38,7 +43,7 @@ export default function NewPatient() {
         notes: form.notes.trim() || null,
       })
       navigate(`/patient/${patient.id}`)
-    } catch (err) {
+    } catch {
       setError('Failed to save patient. Please try again.')
       setSaving(false)
     }
@@ -47,7 +52,7 @@ export default function NewPatient() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <button className="btn btn-secondary" onClick={() => navigate(-1)}>← Back</button>
+        <button className="btn btn-secondary" onClick={() => navigate(-1)}>Back</button>
         <h2 className={styles.title}>New Patient</h2>
       </header>
 
@@ -59,7 +64,7 @@ export default function NewPatient() {
                 <LocalImage filePath={form.photo_path} alt="Patient" className={styles.photo} />
               ) : (
                 <div className={styles.photoPlaceholder}>
-                  <span>📷</span>
+                  <span>Photo</span>
                   <small>Add Photo</small>
                 </div>
               )}
@@ -79,7 +84,7 @@ export default function NewPatient() {
             <div className="form-group">
               <label>Gender</label>
               <select className="form-control" value={form.gender} onChange={set('gender')}>
-                <option value="">Select…</option>
+                <option value="">Select...</option>
                 {GENDERS.map((g) => <option key={g}>{g}</option>)}
               </select>
             </div>
@@ -92,7 +97,7 @@ export default function NewPatient() {
 
           <div className="form-group">
             <label>Address</label>
-            <textarea className="form-control" rows={2} value={form.address} onChange={set('address')} placeholder="Street, City…" />
+            <textarea className="form-control" rows={2} value={form.address} onChange={set('address')} placeholder="Street, City..." />
           </div>
 
           <div className="form-group">
@@ -105,7 +110,7 @@ export default function NewPatient() {
           <div className={styles.actions}>
             <button type="button" className="btn btn-secondary btn-lg" onClick={() => navigate(-1)}>Cancel</button>
             <button type="submit" className="btn btn-primary btn-lg" disabled={saving}>
-              {saving ? 'Saving…' : 'Save Patient'}
+              {saving ? 'Saving...' : 'Save Patient'}
             </button>
           </div>
         </form>

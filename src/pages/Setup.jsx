@@ -33,9 +33,14 @@ export default function Setup({ onComplete }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.name.trim()) { setError('Your name is required'); return }
+    if (!form.name.trim()) {
+      setError('Your name is required')
+      return
+    }
+
     setSaving(true)
     setError('')
+
     try {
       await window.electronAPI.saveDoctorProfile({
         name: form.name.trim(),
@@ -57,7 +62,7 @@ export default function Setup({ onComplete }) {
     <div className={styles.page}>
       <div className={styles.card}>
         <div className={styles.top}>
-          <span className={styles.logo}>🏥</span>
+          <span className={styles.logo}>Clinic</span>
           <h1 className={styles.appName}>ArogyaDesk</h1>
           <p className={styles.subtitle}>Let's set up your profile before we begin</p>
         </div>
@@ -69,7 +74,7 @@ export default function Setup({ onComplete }) {
                 <LocalImage filePath={form.photo_path} alt="Doctor" className={styles.photo} />
               ) : (
                 <div className={styles.photoPlaceholder}>
-                  <span>👨‍⚕️</span>
+                  <span>Doctor</span>
                   <small>Add Photo</small>
                 </div>
               )}
@@ -100,7 +105,7 @@ export default function Setup({ onComplete }) {
           <div className="form-group">
             <label>Specialization</label>
             <select className="form-control" value={form.specialization} onChange={set('specialization')}>
-              <option value="">Select…</option>
+              <option value="">Select...</option>
               {SPECIALIZATIONS.map((s) => <option key={s}>{s}</option>)}
             </select>
           </div>
@@ -122,14 +127,14 @@ export default function Setup({ onComplete }) {
               rows={2}
               value={form.address}
               onChange={set('address')}
-              placeholder="123, Main Street, Ahmedabad…"
+              placeholder="123, Main Street, Ahmedabad..."
             />
           </div>
 
           {error && <div className={styles.error}>{error}</div>}
 
           <button type="submit" className={`btn btn-primary btn-lg ${styles.submitBtn}`} disabled={saving}>
-            {saving ? 'Saving…' : 'Get Started →'}
+            {saving ? 'Saving...' : 'Get Started'}
           </button>
         </form>
       </div>

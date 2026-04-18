@@ -21,20 +21,25 @@ export default function EditPatientModal({ patient, onSave, onClose }) {
 
   const pickPhoto = async () => {
     const path = await window.electronAPI.selectFile({
-      filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'webp'] }]
+      filters: [{ name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'webp'] }],
     })
     if (path) setForm((f) => ({ ...f, photo_path: path }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.name.trim()) { setError('Name is required'); return }
+    if (!form.name.trim()) {
+      setError('Name is required')
+      return
+    }
+
     setSaving(true)
     setError('')
+
     try {
       const updated = await window.electronAPI.updatePatient(patient.id, {
         name: form.name.trim(),
-        age: form.age ? parseInt(form.age) : null,
+        age: form.age ? parseInt(form.age, 10) : null,
         gender: form.gender || null,
         phone: form.phone.trim() || null,
         address: form.address.trim() || null,
@@ -53,7 +58,7 @@ export default function EditPatientModal({ patient, onSave, onClose }) {
       <div className={styles.modal}>
         <div className={styles.modalHeader}>
           <h3>Edit Patient</h3>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
+          <button className={styles.closeBtn} onClick={onClose} aria-label="Close">x</button>
         </div>
 
         <form className={styles.modalBody} onSubmit={handleSubmit}>
@@ -61,14 +66,21 @@ export default function EditPatientModal({ patient, onSave, onClose }) {
             <div
               onClick={pickPhoto}
               style={{
-                width: 72, height: 72, borderRadius: '50%', border: '2px dashed var(--border)',
-                cursor: 'pointer', overflow: 'hidden', display: 'flex', alignItems: 'center',
-                justifyContent: 'center', fontSize: 28
+                width: 72,
+                height: 72,
+                borderRadius: '50%',
+                border: '2px dashed var(--border)',
+                cursor: 'pointer',
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 16,
               }}
             >
               {form.photo_path ? (
                 <LocalImage filePath={form.photo_path} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              ) : '📷'}
+              ) : 'Photo'}
             </div>
           </div>
 
@@ -85,7 +97,7 @@ export default function EditPatientModal({ patient, onSave, onClose }) {
             <div className="form-group">
               <label>Gender</label>
               <select className="form-control" value={form.gender} onChange={set('gender')}>
-                <option value="">Select…</option>
+                <option value="">Select...</option>
                 {GENDERS.map((g) => <option key={g}>{g}</option>)}
               </select>
             </div>
@@ -111,7 +123,7 @@ export default function EditPatientModal({ patient, onSave, onClose }) {
           <div className={styles.modalFooter}>
             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
             <button type="submit" className="btn btn-primary" disabled={saving}>
-              {saving ? 'Saving…' : 'Save Changes'}
+              {saving ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>

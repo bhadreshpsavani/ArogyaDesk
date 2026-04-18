@@ -18,9 +18,10 @@ export default function PatientProfile() {
   const [doctor, setDoctor] = useState(null)
 
   const load = useCallback(async () => {
+    const patientId = parseInt(id, 10)
     const [p, v, d] = await Promise.all([
-      window.electronAPI.getPatient(parseInt(id)),
-      window.electronAPI.getVisitsByPatient(parseInt(id)),
+      window.electronAPI.getPatient(patientId),
+      window.electronAPI.getVisitsByPatient(patientId),
       window.electronAPI.getDoctorProfile(),
     ])
     setPatient(p)
@@ -38,9 +39,10 @@ export default function PatientProfile() {
   }
 
   const handleVisitSaved = async () => {
+    const patientId = parseInt(id, 10)
     setShowVisitForm(false)
     setEditingVisit(null)
-    const v = await window.electronAPI.getVisitsByPatient(parseInt(id))
+    const v = await window.electronAPI.getVisitsByPatient(patientId)
     setVisits(v)
   }
 
@@ -49,17 +51,16 @@ export default function PatientProfile() {
     setShowEditPatient(false)
   }
 
-  if (loading) return <div className={styles.loading}>Loading…</div>
+  if (loading) return <div className={styles.loading}>Loading...</div>
   if (!patient) return <div className={styles.loading}>Patient not found.</div>
 
   const initials = patient.name.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase()
-
   const totalRevenue = visits.reduce((sum, v) => sum + (v.final_amount || 0), 0)
 
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <button className="btn btn-secondary" onClick={() => navigate('/')}>← Back</button>
+        <button className="btn btn-secondary" onClick={() => navigate('/')}>Back</button>
         <div className={styles.headerActions}>
           <button className="btn btn-secondary" onClick={() => setShowEditPatient(true)}>Edit Patient</button>
           <button className="btn btn-danger" onClick={handleDeletePatient}>Delete</button>
@@ -81,9 +82,9 @@ export default function PatientProfile() {
             <div className={styles.patientMeta}>
               {patient.age && <span>{patient.age} years</span>}
               {patient.gender && <span>{patient.gender}</span>}
-              {patient.phone && <span>📞 {patient.phone}</span>}
+              {patient.phone && <span>Phone: {patient.phone}</span>}
             </div>
-            {patient.address && <div className={styles.address}>📍 {patient.address}</div>}
+            {patient.address && <div className={styles.address}>Address: {patient.address}</div>}
             {patient.notes && <div className={styles.patientNotes}>{patient.notes}</div>}
           </div>
           <div className={styles.stats}>
@@ -92,7 +93,7 @@ export default function PatientProfile() {
               <span className={styles.statLabel}>Visits</span>
             </div>
             <div className={styles.stat}>
-              <span className={styles.statValue}>₹{totalRevenue.toLocaleString('en-IN')}</span>
+              <span className={styles.statValue}>Rs {totalRevenue.toLocaleString('en-IN')}</span>
               <span className={styles.statLabel}>Total</span>
             </div>
           </div>
@@ -116,7 +117,7 @@ export default function PatientProfile() {
 
       {showVisitForm && (
         <VisitForm
-          patientId={parseInt(id)}
+          patientId={parseInt(id, 10)}
           visit={editingVisit}
           onSave={handleVisitSaved}
           onClose={() => { setShowVisitForm(false); setEditingVisit(null) }}
