@@ -1,33 +1,33 @@
-# ArogyaDesk
+# 🏥 ArogyaDesk
 
-ArogyaDesk is a simple desktop app for a doctor's clinic. It is designed for one doctor using one computer and keeps patient records on the local machine so the clinic can continue working without depending on the internet.
+ArogyaDesk is a simple, **offline-first** desktop app for a doctor's clinic. It is designed for one doctor using one computer and keeps patient records on the local machine so the clinic can continue working without depending on the internet. 🚀
 
-## What You Can Do
+## ✨ Features
 
-- Create and manage patient records
-- Search patients by name or phone number
-- Add visit history for each patient
-- Record symptoms, diagnosis, prescription notes, charges, and discounts
-- Attach local prescription or report files to a visit
-- Export a visit receipt as PDF
-- Keep doctor and clinic details inside the app
+- 📝 **Create and manage** patient records
+- 🔍 **Search patients** by name or phone number
+- 📅 **Add visit history** for each patient
+- 📋 **Record** symptoms, diagnosis, prescription notes, charges, and discounts
+- 📎 **Attach** local prescription or report files to a visit
+- 📄 **Export** a visit receipt as PDF
+- 🏥 **Keep** doctor and clinic details inside the app
 
-## Who It Is For
+## 🎯 Who It Is For
 
 ArogyaDesk is best suited for:
 
-- Small clinics
-- Solo doctors
-- Reception-plus-doctor workflows on one computer
-- Offline-first record keeping
+- 🏥 Small clinics
+- 👨‍⚕️ Solo doctors
+- 👩‍💼 Reception-plus-doctor workflows on one computer
+- 🔐 Offline-first record keeping
 
-## System Requirements
+## 💻 System Requirements
 
-- Windows computer
-- Installer provided by the clinic or release page
-- Permission to install a desktop application on the machine
+- 🪟 Windows computer
+- 📦 Installer provided by the clinic or release page
+- 🔑 Permission to install a desktop application on the machine
 
-## Installation
+## 📥 Installation
 
 1. Download the latest `ArogyaDesk` Windows installer.
 2. Double-click the installer `.exe` file.
@@ -35,59 +35,59 @@ ArogyaDesk is best suited for:
 4. Finish the installation.
 5. Launch `ArogyaDesk` from the Start menu or desktop shortcut.
 
-## First-Time Setup
+## 🚀 First-Time Setup
 
 When you open the app for the first time, it will ask for clinic profile details.
 
-Fill in:
+**Fill in:**
 
-- Doctor name
-- Clinic name
-- Specialization
-- Phone number
-- Clinic address
-- Optional profile photo
+- 👨‍⚕️ Doctor name
+- 🏥 Clinic name
+- 🎓 Specialization
+- 📞 Phone number
+- 📍 Clinic address
+- 🖼️ Optional profile photo
 
 After saving this profile, the app opens the main patient screen.
 
-## Daily Use
+## 🗓️ Daily Use
 
-### Add a New Patient
+### ➕ Add a New Patient
 
 1. Open the app.
 2. Click `New Patient`.
 3. Enter the patient's details.
 4. Save the record.
 
-Typical patient fields:
+**Typical patient fields:**
 
-- Full name
-- Age
-- Gender
-- Phone number
-- Address
-- Notes
-- Optional photo
+- 👤 Full name
+- 🔢 Age
+- ⚥ Gender
+- 📞 Phone number
+- 📍 Address
+- 📝 Notes
+- 🖼️ Optional photo
 
-### Search for a Patient
+### 🔍 Search for a Patient
 
 Use the search bar on the home screen to find a patient by:
 
-- Name
-- Phone number
+- 👤 Name
+- 📞 Phone number
 
-### Open a Patient Profile
+### 📂 Open a Patient Profile
 
 Click any patient card to open the patient profile. From there you can:
 
-- Review patient information
-- See total visits
-- See total billed amount
-- View visit history
-- Edit patient details
-- Delete the patient record
+- 📋 Review patient information
+- 📊 See total visits
+- 💰 See total billed amount
+- 🕒 View visit history
+- ✏️ Edit patient details
+- 🗑️ Delete the patient record
 
-### Add a Visit
+### ➕ Add a Visit
 
 Inside a patient profile:
 
@@ -98,25 +98,25 @@ Inside a patient profile:
 5. Add charges and discount.
 6. Save the visit.
 
-Visit records can include:
+**Visit records can include:**
 
-- Visit date
-- Symptoms
-- Diagnosis
-- Prescription text
-- Attached local document or image
-- Charges
-- Discount percentage
-- Notes
+- 📅 Visit date
+- 🤒 Symptoms
+- 🩺 Diagnosis
+- 💊 Prescription text
+- 📎 Attached local document or image
+- 💸 Charges
+- 🏷️ Discount percentage
+- 📝 Notes
 
-### Edit or Delete a Visit
+### ✏️ Edit or Delete a Visit
 
 Open the visit entry from the visit history list, then use:
 
 - `Edit`
 - `Delete Visit`
 
-### Export a Receipt PDF
+### 📄 Export a Receipt PDF
 
 From a saved visit:
 
@@ -125,94 +125,89 @@ From a saved visit:
 3. Choose where to save the file.
 4. The app will generate the PDF and open it.
 
-## Attached Files
+## 📁 Attached Files
 
 You can attach local files such as:
 
-- PDF prescriptions
-- Report images
-- Scanned documents
+- 📄 PDF prescriptions
+- 🖼️ Report images
+- 📂 Scanned documents
 
-Important:
+> [!IMPORTANT]
+> - The app stores the **file path**, not a copy of the file.
+> - If the original file is moved, renamed, or deleted, the app may no longer open it.
+> - It is best to keep clinic files in a fixed folder that is not moved frequently.
 
-- The app stores the file path, not a copy of the file
-- If the original file is moved, renamed, or deleted, the app may no longer open it
-
-It is best to keep clinic files in a fixed folder that is not moved frequently.
-
-## Data Storage
+## 💾 Data Storage
 
 ArogyaDesk stores its data locally on the same computer.
 
-- Patient and visit data are saved in a local SQLite database
-- The database file is created automatically by the app
-- No internet connection is required for normal usage
+- 🗄️ Patient and visit data are saved in a local **SQLite database**.
+- 🤖 The database file is created automatically by the app.
+- 🔌 **No internet connection** is required for normal usage.
 
-## Backup Recommendation
+## 🛡️ Backup Recommendation
 
-Because the app is offline-first, backups are important.
+Because the app is offline-first, backups are **critical**. 💾
 
-You should back up:
+**You should back up:**
 
-- The local app database
-- Any attached prescription or report files used by the clinic
+- 🗄️ The local app database
+- 📂 Any attached prescription or report files used by the clinic
 
-Recommended backup routine:
+**Recommended backup routine:**
 
-1. Create a regular copy of the clinic data folder to an external drive or secure cloud storage.
-2. Also back up any folders where prescription/report files are stored.
-3. Keep at least one recent backup outside the clinic computer.
+1. 🔄 Create a regular copy of the clinic data folder to an external drive or secure cloud storage.
+2. 📂 Also back up any folders where prescription/report files are stored.
+3. 🏠 Keep at least one recent backup outside the clinic computer.
 
-## Important Notes
+## ⚠️ Important Notes
 
-- This app is intended for a single-user workflow
-- It is not designed for multiple doctors editing the same data at the same time
-- It does not sync automatically across multiple computers
-- If you reinstall Windows or replace the computer, restore your backups before resuming clinic work
+- 👤 This app is intended for a **single-user** workflow.
+- 🚫 It is not designed for multiple doctors editing the same data at the same time.
+- 🔄 It does **not sync** automatically across multiple computers.
+- 💾 If you reinstall Windows or replace the computer, restore your backups before resuming clinic work.
 
-## Troubleshooting
+## 🛠️ Troubleshooting
 
-### The app opens but no patient data is visible
-
-Possible reasons:
-
-- You are using a different computer or Windows user account
-- The local database was not restored after reinstalling the system
-
-### An attached file does not open
+### 🔍 The app opens but no patient data is visible
 
 Possible reasons:
+- 👤 You are using a different computer or Windows user account.
+- 📂 The local database was not restored after reinstalling the system.
 
-- The original file was moved
-- The original file was renamed
-- The original file was deleted
+### 🚫 An attached file does not open
 
-### A PDF receipt does not save
+Possible reasons:
+- 🚚 The original file was moved.
+- ✏️ The original file was renamed.
+- 🗑️ The original file was deleted.
+
+### 📄 A PDF receipt does not save
 
 Check:
+- 🔑 You have permission to write to the selected folder.
+- 🔒 The destination file is not already locked by another program.
 
-- You have permission to write to the selected folder
-- The destination file is not already locked by another program
-
-## Support Checklist
+## ✅ Support Checklist
 
 If you need help, keep this information ready:
 
-- App version or installer version
-- What action you were doing
-- Whether the problem happens every time or only once
-- Whether the issue is with patient data, attached files, or PDF export
+- 🔢 App version or installer version
+- 🖱️ What action you were doing
+- 🔁 Whether the problem happens every time or only once
+- 📂 Whether the issue is with patient data, attached files, or PDF export
 
-## For Developers
+## 👨‍💻 For Developers
 
-### Stack
+### 🏗️ Stack
 
-- Electron for the desktop shell
-- React with Vite for the renderer
-- better-sqlite3 for local data storage
-- react-router-dom with `HashRouter` for navigation
+- ⚛️ **React** with **Vite** for the renderer
+- ⚡ **Electron** for the desktop shell
+- 🗄️ **better-sqlite3** for local data storage
+- 🛣️ **react-router-dom** with `HashRouter` for navigation
 
-### Project Structure
+### 📁 Project Structure
 
 ```text
 electron/
@@ -229,7 +224,7 @@ src/
   components/    Reusable UI components
 ```
 
-### Local Development
+### 💻 Local Development
 
 1. Install Node.js 20 or later.
 2. Install dependencies:
@@ -245,11 +240,10 @@ npm run dev
 ```
 
 This starts:
+- 🌐 The Vite dev server
+- ⚡ The Electron app pointed at the local Vite URL
 
-- the Vite dev server
-- the Electron app pointed at the local Vite URL
-
-### Useful Scripts
+### 📜 Useful Scripts
 
 ```bash
 npm install      # install dependencies
@@ -259,7 +253,7 @@ npm run dist     # build and package the Windows installer
 npm run preview  # preview the Vite production build
 ```
 
-### Native Dependency Notes
+### 🏗️ Native Dependency Notes
 
 This project uses `better-sqlite3`, which is a native dependency. The `postinstall` script runs:
 
@@ -269,13 +263,13 @@ electron-builder install-app-deps
 
 This helps keep native modules aligned with the Electron version used for packaging.
 
-### Packaging
+### 📦 Packaging
 
 Windows packaging is handled by `electron-builder`.
 
-- Output folder: `dist-electron/`
-- Windows target: `nsis`
-- App icon: `assets/icon.ico`
+- 📁 Output folder: `dist-electron/`
+- 🎯 Windows target: `nsis`
+- 🖼️ App icon: `assets/icon.ico`
 
 Create a packaged build with:
 
@@ -283,41 +277,66 @@ Create a packaged build with:
 npm run dist
 ```
 
-### Database
+### 🗄️ Database
 
 The app stores data in a local SQLite database created inside Electron's user data directory.
 
-- Database filename: `arogyadesk.db`
-- Tables:
-  - `patients`
-  - `visits`
-  - `doctor_profile`
+- 📄 Database filename: `arogyadesk.db`
+- 📊 Tables: `patients`, `visits`, `doctor_profile`
 
 Current behavior is offline-first and single-user. There is no multi-device sync layer.
 
-### IPC Surface
+### 🔌 IPC Surface
 
 The renderer accesses native functionality through `window.electronAPI`.
 
 Current groups include:
+- 👤 Patient CRUD and search
+- 📅 Visit CRUD
+- 👨‍⚕️ Doctor profile read and save
+- 📂 File selection and file opening
+- 🖼️ Local image reading
+- 📄 PDF generation
 
-- patient CRUD and search
-- visit CRUD
-- doctor profile read and save
-- file selection and file opening
-- local image reading
-- PDF generation
-
-### Release Notes
+### 🏷️ Release Notes
 
 GitHub Actions are configured for:
+- 🏗️ CI builds on pushes and pull requests
+- 📦 Windows release packaging on tags like `v0.1.6`
 
-- CI builds on pushes and pull requests
-- Windows release packaging on tags like `v0.1.6`
+### 🚫 Current Limitations
 
-### Current Limitations
+- 🧪 No automated test suite yet
+- 👤 Single-user local workflow only
+- 📎 Attached files are referenced by path, not copied into app storage
+- 🏗️ Build verification may require a full local or CI environment because some sandboxes block Vite or esbuild child processes
 
-- No automated test suite yet
-- Single-user local workflow only
-- Attached files are referenced by path, not copied into app storage
-- Build verification may require a full local or CI environment because some sandboxes block Vite or esbuild child processes
+## 🤝 Contributing
+
+Contributions are welcome! If you find a bug or want to suggest a feature:
+
+1. 🐛 [Open an issue](https://github.com/bhadreshpsavani/ArogyaDesk/issues) describing the problem or idea.
+2. 🍴 Fork the repository.
+3. 🌿 Create a branch for your change.
+4. 📤 Submit a pull request with a clear description.
+
+Please keep pull requests focused — one fix or feature per PR.
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## ☕ Support the Project
+
+ArogyaDesk is free and open source. If it saves you time or helps your clinic, consider supporting its development:
+
+- 💖 [Sponsor on GitHub](https://github.com/sponsors/bhadreshpsavani)
+- ☕ [Support on Ko-fi](https://ko-fi.com/bhadresh)
+- 💸 **UPI (India):** `9624173599@upi` — works with GPay, PhonePe, Paytm, and any UPI app
+
+### 📱 Scan to Pay (UPI)
+Alternatively, you can scan this QR code with any UPI app:
+
+![UPI QR Code](assets/QR_Code.jpeg)
+
+Your support helps keep the project maintained and growing. Thank you! 🙏
