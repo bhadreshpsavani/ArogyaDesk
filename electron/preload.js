@@ -43,6 +43,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   createVisitReport: (opts) => ipcRenderer.invoke('visitReports:create', opts),
   deleteVisitReport: (id) => ipcRenderer.invoke('visitReports:delete', id),
 
+  // Backup
+  createBackup: () => ipcRenderer.invoke('backup:create'),
+  restoreBackup: () => ipcRenderer.invoke('backup:restore'),
+
   // Files
   selectFile: (options) => ipcRenderer.invoke('file:select', options),
   openFile: (filePath) => ipcRenderer.invoke('file:open', filePath),

@@ -343,4 +343,7 @@ module.exports = {
   getReportsByVisit,
   createVisitReport,
   deleteVisitReport,
+  getAllPatientPhotos: () => db.prepare('SELECT id, photo_path FROM patients WHERE photo_path IS NOT NULL').all(),
+  close: () => db.close(),
+  backup: (destPath) => db.backup(destPath),
 }

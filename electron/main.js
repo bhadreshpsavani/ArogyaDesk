@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const os = require('os')
+const AdmZip = require('adm-zip')
 const db = require('./database')
 
 const userDataPath = app.getPath('userData')
@@ -155,6 +156,120 @@ ipcMain.handle('visitReports:delete', (_, id) => {
     try { fs.unlinkSync(report.file_path) } catch {}
   }
   return deleted
+})
+
+// Backup IPC handlers
+const dbPath = path.join(userDataPath, 'arogyadesk.db')
+
+ipcMain.handle('backup:create', async () => {
+  const dateStr = new Date().toISOString().slice(0, 10)
+  const { canceled, filePath } = await dialog.showSaveDialog({
+    defaultPath: `ArogyaDesk_Backup_${dateStr}.arogyadb`,
+    filters: [{ name: 'ArogyaDesk Backup', extensions: ['arogyadb'] }],
+  })
+  if (canceled || !filePath) return { success: false, canceled: true }
+
+  const tmpDb = path.join(os.tmpdir(), `arogyadesk_backup_${Date.now()}.db`)
+  try {
+    // Use better-sqlite3 backup API — handles WAL safely
+    await db.backup(tmpDb)
+
+    const zip = new AdmZip()
+    zip.addLocalFile(tmpDb, '', 'arogyadesk.db')
+
+    const recordsDir = path.join(userDataPath, 'patient_records')
+    if (fs.existsSync(recordsDir)) zip.addLocalFolder(recordsDir, 'patient_records')
+
+    const reportsDir = path.join(userDataPath, 'visit_reports')
+    if (fs.existsSync(reportsDir)) zip.addLocalFolder(reportsDir, 'visit_reports')
+
+    // Profile photos (stored at arbitrary user paths — copy into zip)
+    const photosManifest = { patients: {}, doctor: null }
+    const doctorProfile = db.getDoctorProfile()
+    if (doctorProfile?.photo_path && fs.existsSync(doctorProfile.photo_path)) {
+      const zipName = `doctor${path.extname(doctorProfile.photo_path)}`
+      zip.addLocalFile(doctorProfile.photo_path, 'photos', zipName)
+      photosManifest.doctor = zipName
+    }
+    for (const { id, photo_path } of db.getAllPatientPhotos()) {
+      if (fs.existsSync(photo_path)) {
+        const zipName = `patient_${id}${path.extname(photo_path)}`
+        zip.addLocalFile(photo_path, 'photos', zipName)
+        photosManifest.patients[id] = zipName
+      }
+    }
+    zip.addFile('photos_manifest.json', Buffer.from(JSON.stringify(photosManifest), 'utf8'))
+
+    const meta = JSON.stringify({ createdAt: new Date().toISOString(), appVersion: app.getVersion() })
+    zip.addFile('backup_meta.json', Buffer.from(meta, 'utf8'))
+
+    zip.writeZip(filePath)
+    return { success: true, filePath }
+  } catch (err) {
+    return { success: false, error: err.message }
+  } finally {
+    try { fs.unlinkSync(tmpDb) } catch {}
+  }
+})
+
+ipcMain.handle('backup:restore', async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog({
+    filters: [{ name: 'ArogyaDesk Backup', extensions: ['arogyadb'] }],
+    properties: ['openFile'],
+  })
+  if (canceled || !filePaths[0]) return { success: false }
+
+  try {
+    const zip = new AdmZip(filePaths[0])
+
+    // Read meta first so renderer can confirm
+    const metaEntry = zip.getEntry('backup_meta.json')
+    const meta = metaEntry ? JSON.parse(metaEntry.getData().toString('utf8')) : {}
+
+    const { response } = await dialog.showMessageBox({
+      type: 'warning',
+      buttons: ['Restore & Restart', 'Cancel'],
+      defaultId: 1,
+      title: 'Restore Backup',
+      message: 'This will replace ALL current data.',
+      detail: `Backup date: ${meta.createdAt ? new Date(meta.createdAt).toLocaleString() : 'unknown'}\n\nThis cannot be undone. The app will restart after restoring.`,
+    })
+    if (response !== 0) return { success: false, canceled: true }
+
+    // Close DB before overwriting
+    db.close()
+
+    // Extract everything (DB, patient_records, visit_reports, photos)
+    zip.extractAllTo(userDataPath, true)
+
+    const extractedDb = path.join(userDataPath, 'arogyadesk.db')
+    if (!fs.existsSync(extractedDb)) {
+      return { success: false, error: 'Backup does not contain a valid database file.' }
+    }
+
+    // Rewrite photo paths in restored DB to point to extracted locations
+    const manifestEntry = zip.getEntry('photos_manifest.json')
+    if (manifestEntry) {
+      const manifest = JSON.parse(manifestEntry.getData().toString('utf8'))
+      const Database = require('better-sqlite3')
+      const restoredDb = new Database(extractedDb)
+      if (manifest.doctor) {
+        restoredDb.prepare('UPDATE doctor_profile SET photo_path = ? WHERE id = 1')
+          .run(path.join(userDataPath, 'photos', manifest.doctor))
+      }
+      for (const [patientId, zipName] of Object.entries(manifest.patients || {})) {
+        restoredDb.prepare('UPDATE patients SET photo_path = ? WHERE id = ?')
+          .run(path.join(userDataPath, 'photos', zipName), parseInt(patientId))
+      }
+      restoredDb.close()
+    }
+
+    app.relaunch()
+    app.exit(0)
+    return { success: true }
+  } catch (err) {
+    return { success: false, error: err.message }
+  }
 })
 
 // File IPC handlers

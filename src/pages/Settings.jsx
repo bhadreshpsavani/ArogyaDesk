@@ -6,9 +6,12 @@ export default function Settings() {
   const navigate = useNavigate()
   const [medicines, setMedicines] = useState([])
   const [loading, setLoading] = useState(true)
-  
+
   const [form, setForm] = useState({ id: null, name: '', default_dosage: '' })
   const [saving, setSaving] = useState(false)
+
+  const [backupStatus, setBackupStatus] = useState(null) // { type: 'success'|'error', message }
+  const [backupBusy, setBackupBusy] = useState(false)
 
   const load = async () => {
     const data = await window.electronAPI.getAllMedicines()
@@ -58,6 +61,39 @@ export default function Settings() {
     load()
   }
 
+  const handleBackup = async () => {
+    setBackupBusy(true)
+    setBackupStatus(null)
+    try {
+      const result = await window.electronAPI.createBackup()
+      if (result.success) {
+        setBackupStatus({ type: 'success', message: `Backup saved: ${result.filePath}` })
+      } else if (result.error) {
+        setBackupStatus({ type: 'error', message: `Backup failed: ${result.error}` })
+      }
+      // result.canceled — user dismissed dialog, show nothing
+    } catch (err) {
+      setBackupStatus({ type: 'error', message: `Backup failed: ${err.message}` })
+    } finally {
+      setBackupBusy(false)
+    }
+  }
+
+  const handleRestore = async () => {
+    setBackupBusy(true)
+    setBackupStatus(null)
+    try {
+      const result = await window.electronAPI.restoreBackup()
+      if (result?.error) {
+        setBackupStatus({ type: 'error', message: `Restore failed: ${result.error}` })
+      }
+    } catch (err) {
+      setBackupStatus({ type: 'error', message: `Restore failed: ${err.message}` })
+    } finally {
+      setBackupBusy(false)
+    }
+  }
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -70,6 +106,38 @@ export default function Settings() {
       </header>
 
       <main className={styles.body}>
+        <div className={styles.card}>
+          <h3 className={styles.title}>Data &amp; Backup</h3>
+          <p style={{ color: 'var(--text-muted)', marginBottom: 20 }}>
+            Back up all patient data, visit records, and attachments to a single file.
+            Restore from a backup to replace all current data.
+          </p>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 16 }}>
+            <button className="btn btn-primary" onClick={handleBackup} disabled={backupBusy}>
+              {backupBusy ? 'Working...' : 'Create Backup'}
+            </button>
+            <button className="btn btn-secondary" onClick={handleRestore} disabled={backupBusy}>
+              Restore from Backup
+            </button>
+          </div>
+          {backupStatus && (
+            <div style={{
+              padding: '10px 14px',
+              borderRadius: 8,
+              fontSize: 13,
+              background: backupStatus.type === 'success' ? '#d1fae5' : '#fee2e2',
+              color: backupStatus.type === 'success' ? '#065f46' : '#991b1b',
+              border: `1px solid ${backupStatus.type === 'success' ? '#6ee7b7' : '#fca5a5'}`,
+              wordBreak: 'break-all',
+            }}>
+              {backupStatus.message}
+            </div>
+          )}
+          <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 12 }}>
+            Note: Doctor and patient profile photos are stored at their original locations and are not included in the backup.
+          </p>
+        </div>
+
         <div className={styles.card}>
           <h3 className={styles.title}>Saved Medicines</h3>
           <p style={{ color: 'var(--text-muted)', marginBottom: 16 }}>
