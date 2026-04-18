@@ -4,6 +4,8 @@ const fs = require('fs')
 const os = require('os')
 const db = require('./database')
 
+const userDataPath = app.getPath('userData')
+
 const IMAGE_MIME = {
   '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png',
   '.webp': 'image/webp', '.gif': 'image/gif',
@@ -69,6 +71,13 @@ ipcMain.handle('visits:delete', (_, id) => db.deleteVisit(id))
 ipcMain.handle('doctor:get', () => db.getDoctorProfile())
 ipcMain.handle('doctor:save', (_, data) => db.saveDoctorProfile(data))
 
+// Medicines IPC handlers
+ipcMain.handle('medicines:getAll', () => db.getAllMedicines())
+ipcMain.handle('medicines:get', (_, id) => db.getMedicine(id))
+ipcMain.handle('medicines:create', (_, data) => db.createMedicine(data))
+ipcMain.handle('medicines:update', (_, id, data) => db.updateMedicine(id, data))
+ipcMain.handle('medicines:delete', (_, id) => db.deleteMedicine(id))
+
 // Image reader — returns base64 data URL, avoids all file:// protocol issues
 ipcMain.handle('file:readImage', (_, filePath) => {
   if (!filePath) return null
@@ -105,6 +114,47 @@ ipcMain.handle('pdf:generate', async (_, { html, defaultFilename }) => {
   fs.writeFileSync(filePath, pdfBuffer)
 
   return { success: true, filePath }
+})
+
+// Patient records IPC handlers
+const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif'])
+ipcMain.handle('records:getByPatient', (_, patientId) => db.getRecordsByPatient(patientId))
+ipcMain.handle('records:create', async (_, { patientId, sourcePath, label }) => {
+  const ext = path.extname(sourcePath).toLowerCase()
+  const fileType = IMAGE_EXTS.has(ext) ? 'image' : ext === '.pdf' ? 'pdf' : 'document'
+  const fileName = path.basename(sourcePath)
+  const destDir = path.join(userDataPath, 'patient_records', String(patientId))
+  fs.mkdirSync(destDir, { recursive: true })
+  const destPath = path.join(destDir, `${Date.now()}_${fileName}`)
+  fs.copyFileSync(sourcePath, destPath)
+  return db.createRecord({ patient_id: patientId, file_path: destPath, file_name: fileName, file_type: fileType, label: label || null })
+})
+ipcMain.handle('records:delete', (_, id) => {
+  const { deleted, record } = db.deleteRecord(id)
+  if (deleted && record?.file_path) {
+    try { fs.unlinkSync(record.file_path) } catch {}
+  }
+  return deleted
+})
+
+// Visit reports IPC handlers
+ipcMain.handle('visitReports:getByVisit', (_, visitId) => db.getReportsByVisit(visitId))
+ipcMain.handle('visitReports:create', async (_, { visitId, sourcePath, label }) => {
+  const ext = path.extname(sourcePath).toLowerCase()
+  const fileType = IMAGE_EXTS.has(ext) ? 'image' : ext === '.pdf' ? 'pdf' : 'document'
+  const fileName = path.basename(sourcePath)
+  const destDir = path.join(userDataPath, 'visit_reports', String(visitId))
+  fs.mkdirSync(destDir, { recursive: true })
+  const destPath = path.join(destDir, `${Date.now()}_${fileName}`)
+  fs.copyFileSync(sourcePath, destPath)
+  return db.createVisitReport({ visit_id: visitId, file_path: destPath, file_name: fileName, file_type: fileType, label: label || null })
+})
+ipcMain.handle('visitReports:delete', (_, id) => {
+  const { deleted, report } = db.deleteVisitReport(id)
+  if (deleted && report?.file_path) {
+    try { fs.unlinkSync(report.file_path) } catch {}
+  }
+  return deleted
 })
 
 // File IPC handlers

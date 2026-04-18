@@ -4,7 +4,14 @@
       "Skill(update-config)",
       "Bash(npm install *)",
       "Bash(npx electron-rebuild *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(magick --version)",
+      "Bash(convert --version)",
+      "Bash(python3 -c \"from PIL import Image; print\\('pillow ok'\\)\")",
+      "Bash(pip install *)",
+      "Bash(python3 -c \"from PIL import Image; print\\('ok'\\)\")",
+      "Bash(pip3 install *)",
+      "Bash(python3 *)"
     ]
   }
 }

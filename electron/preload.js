@@ -20,11 +20,28 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getDoctorProfile: () => ipcRenderer.invoke('doctor:get'),
   saveDoctorProfile: (data) => ipcRenderer.invoke('doctor:save', data),
 
+  // Medicines
+  getAllMedicines: () => ipcRenderer.invoke('medicines:getAll'),
+  getMedicine: (id) => ipcRenderer.invoke('medicines:get', id),
+  createMedicine: (data) => ipcRenderer.invoke('medicines:create', data),
+  updateMedicine: (id, data) => ipcRenderer.invoke('medicines:update', id, data),
+  deleteMedicine: (id) => ipcRenderer.invoke('medicines:delete', id),
+
   // PDF
   generatePdf: (opts) => ipcRenderer.invoke('pdf:generate', opts),
 
   // Image reader
   readImage: (filePath) => ipcRenderer.invoke('file:readImage', filePath),
+
+  // Patient records
+  getRecordsByPatient: (patientId) => ipcRenderer.invoke('records:getByPatient', patientId),
+  createRecord: (opts) => ipcRenderer.invoke('records:create', opts),
+  deleteRecord: (id) => ipcRenderer.invoke('records:delete', id),
+
+  // Visit reports
+  getReportsByVisit: (visitId) => ipcRenderer.invoke('visitReports:getByVisit', visitId),
+  createVisitReport: (opts) => ipcRenderer.invoke('visitReports:create', opts),
+  deleteVisitReport: (id) => ipcRenderer.invoke('visitReports:delete', id),
 
   // Files
   selectFile: (options) => ipcRenderer.invoke('file:select', options),

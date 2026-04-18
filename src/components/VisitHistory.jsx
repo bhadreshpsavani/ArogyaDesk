@@ -1,10 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { buildReceiptHtml } from '../pdfTemplate'
 import styles from './VisitHistory.module.css'
+import reportStyles from './VisitReports.module.css'
 
 export default function VisitHistory({ visits, patient, doctor, onEdit, onDelete }) {
   const [expanded, setExpanded] = useState(null)
   const [exporting, setExporting] = useState(null)
+  const [visitReports, setVisitReports] = useState({})
+
+  useEffect(() => {
+    if (expanded == null) return
+    window.electronAPI.getReportsByVisit(expanded).then((reports) => {
+      setVisitReports((prev) => ({ ...prev, [expanded]: reports }))
+    }).catch(() => {})
+  }, [expanded])
 
   const handleExportPdf = async (visit) => {
     setExporting(visit.id)
@@ -38,7 +47,7 @@ export default function VisitHistory({ visits, patient, doctor, onEdit, onDelete
     <div className={styles.list}>
       {visits.map((visit) => {
         const isOpen = expanded === visit.id
-        const date = new Date(visit.visit_date).toLocaleDateString('en-IN', {
+        const date = new Date(visit.visit_date + 'T00:00:00').toLocaleDateString('en-IN', {
           day: 'numeric', month: 'long', year: 'numeric',
         })
 
@@ -103,6 +112,24 @@ export default function VisitHistory({ visits, patient, doctor, onEdit, onDelete
                   >
                     Open Prescription File
                   </button>
+                )}
+                {(visitReports[visit.id] || []).length > 0 && (
+                  <div className={styles.field}>
+                    <span className={styles.fieldLabel}>Reports</span>
+                    <div className={reportStyles.reportList}>
+                      {(visitReports[visit.id] || []).map((r) => (
+                        <button
+                          key={r.id}
+                          className={reportStyles.reportChip}
+                          onClick={() => window.electronAPI.openFile(r.file_path)}
+                          title={`Open ${r.file_name}`}
+                        >
+                          <span>{r.file_type === 'image' ? '🖼' : '📄'}</span>
+                          <span>{r.label || r.file_name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 )}
                 {visit.notes && (
                   <div className={styles.field}>

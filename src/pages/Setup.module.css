@@ -3,62 +3,76 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0f2a35 0%, #134e5e 50%, #1e3a5f 100%);
+  background: var(--bg-gradient);
   padding: 24px;
 }
 
 .card {
-  background: var(--surface);
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.12);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg), var(--glass-shadow);
   width: 100%;
-  max-width: 480px;
+  max-width: 500px;
   overflow: hidden;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .top {
-  background: var(--primary-gradient);
+  background: var(--icon-bg);
+  border-bottom: 1px solid var(--border);
   padding: 32px 32px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   text-align: center;
 }
 
 .logo {
-  font-size: 36px;
+  font-size: 40px;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 12px rgba(14, 165, 233, 0.4));
 }
 
 .appName {
-  font-size: 22px;
-  font-weight: 700;
-  color: white;
-  letter-spacing: -0.3px;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
 }
 
 .subtitle {
   font-size: 14px;
-  color: rgba(255,255,255,0.8);
-  margin-top: 2px;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
 .form {
-  padding: 28px 32px 32px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .photoSection {
   display: flex;
   justify-content: center;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .photoWrap {
-  width: 88px;
-  height: 88px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   border: 2px dashed var(--border);
   cursor: pointer;
@@ -66,12 +80,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.15s;
-  background: var(--bg);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--icon-bg);
 }
 
 .photoWrap:hover {
   border-color: var(--primary);
+  background: var(--icon-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
 
 .photo {
@@ -84,28 +101,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   color: var(--text-muted);
   font-size: 28px;
 }
 
 .photoPlaceholder small {
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .error {
-  background: var(--danger-light);
+  background: rgba(239, 68, 68, 0.15);
   color: var(--danger);
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  border: 1px solid #fca5a5;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .submitBtn {
   width: 100%;
   justify-content: center;
-  margin-top: 4px;
+  margin-top: 8px;
   font-size: 16px;
+  padding: 16px;
 }

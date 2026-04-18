@@ -6,70 +6,83 @@
 }
 
 .header {
-  background: linear-gradient(135deg, #0f2a35 0%, #134e5e 60%, #1a3a6e 100%);
-  border-bottom: none;
-  padding: 0 24px;
-  height: 60px;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  box-shadow: 0 2px 12px rgba(8,145,178,0.25);
+  z-index: 10;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .brandIcon {
-  font-size: 22px;
+  font-size: 26px;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(14, 165, 233, 0.4));
 }
 
 .brandName {
-  font-size: 18px;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -0.3px;
-  line-height: 1.2;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
 }
 
 .clinicName {
   display: block;
-  font-size: 11px;
-  color: rgba(255,255,255,0.6);
-  font-weight: 400;
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
 }
 
 .doctorBtn {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 10px;
-  padding: 6px 12px 6px 6px;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 8px 20px 8px 8px;
   cursor: pointer;
-  transition: all 0.15s;
-  backdrop-filter: blur(4px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .doctorBtn:hover {
-  background: rgba(255,255,255,0.18);
-  border-color: rgba(255,255,255,0.4);
+  background: var(--surface-hover);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--primary-glow);
 }
 
 .doctorAvatar {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--primary-light);
+  background: var(--primary-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   flex-shrink: 0;
+  box-shadow: var(--glass-shadow);
 }
 
 .doctorPhoto {
@@ -79,49 +92,57 @@
 }
 
 .doctorInitials {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--primary);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-inverse);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 .doctorInfo {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1px;
+  gap: 2px;
 }
 
 .doctorName {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text);
   white-space: nowrap;
 }
 
 .doctorSpec {
-  font-size: 11px;
-  color: rgba(255,255,255,0.65);
+  font-size: 13px;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
 .editIcon {
-  font-size: 13px;
-  color: rgba(255,255,255,0.5);
-  margin-left: 2px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: 6px;
+  opacity: 0.5;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+.doctorBtn:hover .editIcon {
+  opacity: 1;
+  color: var(--primary);
 }
 
 .main {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 24px;
+  padding: 32px 48px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 }
 
 .toolbar {
   display: flex;
-  gap: 12px;
+  gap: 20px;
   align-items: center;
 }
 
@@ -134,64 +155,120 @@
 
 .searchIcon {
   position: absolute;
-  left: 12px;
-  font-size: 15px;
+  left: 20px;
+  font-size: 18px;
+  color: var(--primary);
   pointer-events: none;
+  opacity: 0.9;
+  font-weight: 600;
 }
 
 .searchInput {
   width: 100%;
-  padding: 11px 40px 11px 38px;
+  padding: 16px 52px 16px 52px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-pill);
   background: var(--surface);
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text);
   outline: none;
   box-shadow: var(--shadow);
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
 }
 
 .searchInput:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  background: var(--input-focus-bg);
+  box-shadow: 0 0 0 4px var(--primary-glow), var(--shadow-lg);
+  transform: translateY(-2px);
 }
 
 .clearBtn {
   position: absolute;
-  right: 12px;
-  background: none;
-  border: none;
+  right: 18px;
+  background: var(--icon-bg);
+  border: 1px solid var(--border);
   color: var(--text-muted);
-  font-size: 13px;
-  padding: 4px;
-  border-radius: 4px;
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
 }
 
 .clearBtn:hover {
   color: var(--text);
-  background: var(--bg);
+  background: var(--icon-hover-bg);
+  border-color: var(--primary);
+  transform: scale(1.1);
+  box-shadow: 0 0 8px var(--primary-glow);
 }
 
 .newBtn {
   flex-shrink: 0;
   white-space: nowrap;
+  border-radius: var(--radius-pill);
+  padding: 16px 32px;
+  font-size: 16px;
+}
+
+.filterBar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: -8px;
+  padding-left: 8px;
+}
+
+.filterBar select.form-control,
+.filterBar input[type="date"].form-control {
+  padding: 8px 12px;
+  font-size: 14px;
+  background: var(--icon-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+}
+
+.filterBar select.form-control:focus,
+.filterBar input[type="date"].form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.filterBar .btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: var(--radius-pill);
 }
 
 .resultsHeader {
   display: flex;
   align-items: center;
+  margin-top: 8px;
+  padding-left: 8px;
 }
 
 .resultsCount {
-  font-size: 13px;
-  color: var(--text-muted);
+  font-size: 15px;
+  color: var(--primary);
   font-weight: 500;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
 }

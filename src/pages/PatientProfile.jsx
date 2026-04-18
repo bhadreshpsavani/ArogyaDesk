@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import VisitHistory from '../components/VisitHistory'
 import VisitForm from '../components/VisitForm'
 import EditPatientModal from '../components/EditPatientModal'
+import PatientRecords from '../components/PatientRecords'
 import styles from './PatientProfile.module.css'
 import LocalImage from '../components/LocalImage'
 
@@ -17,20 +18,26 @@ export default function PatientProfile() {
   const [loading, setLoading] = useState(true)
   const [doctor, setDoctor] = useState(null)
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (isCurrent) => {
     const patientId = parseInt(id, 10)
     const [p, v, d] = await Promise.all([
       window.electronAPI.getPatient(patientId),
       window.electronAPI.getVisitsByPatient(patientId),
       window.electronAPI.getDoctorProfile(),
     ])
-    setPatient(p)
-    setVisits(v)
-    setDoctor(d)
-    setLoading(false)
+    if (isCurrent()) {
+      setPatient(p)
+      setVisits(v)
+      setDoctor(d)
+      setLoading(false)
+    }
   }, [id])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => {
+    let active = true
+    load(() => active)
+    return () => { active = false }
+  }, [load])
 
   const handleDeletePatient = async () => {
     if (!window.confirm(`Delete ${patient.name} and all their visits? This cannot be undone.`)) return
@@ -54,7 +61,7 @@ export default function PatientProfile() {
   if (loading) return <div className={styles.loading}>Loading...</div>
   if (!patient) return <div className={styles.loading}>Patient not found.</div>
 
-  const initials = patient.name.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase()
+  const initials = patient.name.trim().split(/\s+/).slice(0, 2).map((w) => w[0] || '').join('').toUpperCase()
   const totalRevenue = visits.reduce((sum, v) => sum + (v.final_amount || 0), 0)
 
   return (
@@ -97,6 +104,11 @@ export default function PatientProfile() {
               <span className={styles.statLabel}>Total</span>
             </div>
           </div>
+        </div>
+
+        <div className={styles.section}>
+          <h3 className={styles.sectionTitle}>Patient Records</h3>
+          <PatientRecords patientId={parseInt(id, 10)} />
         </div>
 
         <div className={styles.section}>

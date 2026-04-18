@@ -11,65 +11,74 @@
   justify-content: center;
   height: 100vh;
   color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .header {
-  background: linear-gradient(135deg, #0f2a35 0%, #134e5e 60%, #1a3a6e 100%);
-  border-bottom: none;
-  padding: 10px 24px;
+  background: var(--header-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  box-shadow: 0 2px 12px rgba(8,145,178,0.25);
+  z-index: 10;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
 .headerActions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
 }
 
 .header :global(.btn-secondary) {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.25);
-  color: #fff;
+  background: var(--icon-bg);
+  border-color: var(--border);
+  color: var(--text);
 }
 
 .header :global(.btn-secondary):hover {
-  background: rgba(255,255,255,0.2);
+  background: var(--icon-hover-bg);
+  border-color: var(--primary);
 }
 
 .body {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 24px;
+  padding: 32px 48px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .profileCard {
-  background: var(--surface);
+  background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
+  border-radius: var(--radius-lg);
+  padding: 24px;
   display: flex;
-  gap: 20px;
+  gap: 24px;
   align-items: flex-start;
   box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .avatar {
-  width: 72px;
-  height: 72px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: var(--primary-light);
+  background: var(--primary-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
+  box-shadow: var(--glass-shadow);
 }
 
 .photo {
@@ -79,80 +88,93 @@
 }
 
 .initials {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--primary);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-inverse);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .profileInfo {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .patientName {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
 }
 
 .patientMeta {
   display: flex;
   gap: 16px;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
 .address {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 
 .patientNotes {
-  font-size: 13px;
-  color: var(--text-muted);
+  font-size: 14px;
+  color: var(--text);
+  opacity: 0.8;
   font-style: italic;
-  background: var(--bg);
-  padding: 8px 12px;
-  border-radius: 6px;
-  margin-top: 4px;
+  background: var(--item-detail-bg);
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  margin-top: 6px;
+  border: 1px solid var(--border);
 }
 
 .stats {
   display: flex;
-  gap: 24px;
+  gap: 32px;
   flex-shrink: 0;
+  background: var(--icon-bg);
+  padding: 16px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 .stat {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 
 .statValue {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
   color: var(--primary);
+  text-shadow: 0 0 10px var(--primary-glow);
 }
 
 .statLabel {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .sectionTitle {
-  font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-size: 12px;
+  letter-spacing: 1px;
+  font-size: 13px;
+  margin-left: 8px;
 }

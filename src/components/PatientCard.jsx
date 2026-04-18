@@ -3,14 +3,15 @@ import LocalImage from './LocalImage'
 
 export default function PatientCard({ patient, onClick }) {
   const initials = patient.name
-    .split(' ')
+    .trim()
+    .split(/\s+/)
     .slice(0, 2)
-    .map((w) => w[0])
+    .map((w) => w[0] || '')
     .join('')
     .toUpperCase()
 
   const lastVisit = patient.last_visit
-    ? new Date(patient.last_visit).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    ? new Date(patient.last_visit + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
     : null
 
   return (

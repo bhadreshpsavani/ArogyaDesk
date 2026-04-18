@@ -55,20 +55,89 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_patients_phone ON patients(phone);
   CREATE INDEX IF NOT EXISTS idx_visits_patient ON visits(patient_id);
   CREATE INDEX IF NOT EXISTS idx_visits_date ON visits(visit_date);
+
+  CREATE TABLE IF NOT EXISTS medicines (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    default_dosage TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+
+  CREATE TABLE IF NOT EXISTS patient_records (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    patient_id INTEGER NOT NULL,
+    file_path TEXT NOT NULL,
+    file_name TEXT NOT NULL,
+    file_type TEXT NOT NULL,
+    label TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_records_patient ON patient_records(patient_id);
+
+  CREATE TABLE IF NOT EXISTS visit_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    visit_id INTEGER NOT NULL,
+    file_path TEXT NOT NULL,
+    file_name TEXT NOT NULL,
+    file_type TEXT NOT NULL,
+    label TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (visit_id) REFERENCES visits(id) ON DELETE CASCADE
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_visit_reports_visit ON visit_reports(visit_id);
 `)
 
-function searchPatients(query) {
-  if (!query || query.trim() === '') return getAllPatients()
-  const q = `%${query.trim()}%`
-  return db.prepare(`
+function searchPatients(filters) {
+  let query = ''
+  let gender = ''
+  let visitDate = ''
+  let age = ''
+
+  if (typeof filters === 'string') {
+    query = filters
+  } else if (filters) {
+    query = filters.query || ''
+    gender = filters.gender || ''
+    visitDate = filters.visitDate || ''
+    age = filters.age || ''
+  }
+
+  let sql = `
     SELECT p.*,
       (SELECT visit_date FROM visits WHERE patient_id = p.id ORDER BY visit_date DESC LIMIT 1) as last_visit,
       (SELECT COUNT(*) FROM visits WHERE patient_id = p.id) as visit_count
     FROM patients p
-    WHERE p.name LIKE ? OR p.phone LIKE ?
-    ORDER BY p.name
-    LIMIT 50
-  `).all(q, q)
+    WHERE 1=1
+  `
+  const params = []
+
+  if (query.trim() !== '') {
+    sql += ` AND (p.name LIKE ? OR p.phone LIKE ?)`
+    const q = `%${query.trim()}%`
+    params.push(q, q)
+  }
+
+  if (gender && gender !== 'All' && gender !== '') {
+    sql += ` AND p.gender = ?`
+    params.push(gender)
+  }
+
+  if (visitDate) {
+    sql += ` AND EXISTS (SELECT 1 FROM visits v WHERE v.patient_id = p.id AND v.visit_date = ?)`
+    params.push(visitDate)
+  }
+
+  if (age) {
+    sql += ` AND p.age = ?`
+    params.push(parseInt(age, 10))
+  }
+
+  sql += ` ORDER BY p.name LIMIT 50`
+
+  return db.prepare(sql).all(...params)
 }
 
 function getAllPatients() {
@@ -87,6 +156,19 @@ function getPatient(id) {
 }
 
 function createPatient(data) {
+  let existingQuery = 'SELECT id FROM patients WHERE LOWER(name) = LOWER(?)'
+  const params = [data.name]
+  if (data.phone) {
+    existingQuery += ' AND phone = ?'
+    params.push(data.phone)
+  } else {
+    existingQuery += ' AND phone IS NULL'
+  }
+  const existing = db.prepare(existingQuery).get(...params)
+  if (existing) {
+    throw new Error('DUPLICATE_PATIENT')
+  }
+
   const stmt = db.prepare(`
     INSERT INTO patients (name, age, gender, phone, address, photo_path, notes)
     VALUES (@name, @age, @gender, @phone, @address, @photo_path, @notes)
@@ -96,6 +178,19 @@ function createPatient(data) {
 }
 
 function updatePatient(id, data) {
+  let existingQuery = 'SELECT id FROM patients WHERE LOWER(name) = LOWER(?) AND id != ?'
+  const params = [data.name, id]
+  if (data.phone) {
+    existingQuery += ' AND phone = ?'
+    params.push(data.phone)
+  } else {
+    existingQuery += ' AND phone IS NULL'
+  }
+  const existing = db.prepare(existingQuery).get(...params)
+  if (existing) {
+    throw new Error('DUPLICATE_PATIENT')
+  }
+
   db.prepare(`
     UPDATE patients SET name=@name, age=@age, gender=@gender, phone=@phone,
       address=@address, photo_path=@photo_path, notes=@notes
@@ -156,6 +251,73 @@ function saveDoctorProfile(data) {
   return getDoctorProfile()
 }
 
+function getAllMedicines() {
+  return db.prepare('SELECT * FROM medicines ORDER BY name').all()
+}
+
+function getMedicine(id) {
+  return db.prepare('SELECT * FROM medicines WHERE id = ?').get(id)
+}
+
+function createMedicine(data) {
+  const stmt = db.prepare(`
+    INSERT INTO medicines (name, default_dosage)
+    VALUES (@name, @default_dosage)
+  `)
+  const result = stmt.run(data)
+  return getMedicine(result.lastInsertRowid)
+}
+
+function updateMedicine(id, data) {
+  db.prepare(`
+    UPDATE medicines SET name=@name, default_dosage=@default_dosage
+    WHERE id=@id
+  `).run({ ...data, id })
+  return getMedicine(id)
+}
+
+function deleteMedicine(id) {
+  return db.prepare('DELETE FROM medicines WHERE id = ?').run(id)
+}
+
+function getRecordsByPatient(patientId) {
+  return db.prepare('SELECT * FROM patient_records WHERE patient_id = ? ORDER BY created_at DESC').all(patientId)
+}
+
+function createRecord(data) {
+  const stmt = db.prepare(`
+    INSERT INTO patient_records (patient_id, file_path, file_name, file_type, label)
+    VALUES (@patient_id, @file_path, @file_name, @file_type, @label)
+  `)
+  const result = stmt.run(data)
+  return db.prepare('SELECT * FROM patient_records WHERE id = ?').get(result.lastInsertRowid)
+}
+
+function deleteRecord(id) {
+  const record = db.prepare('SELECT * FROM patient_records WHERE id = ?').get(id)
+  const changes = db.prepare('DELETE FROM patient_records WHERE id = ?').run(id).changes
+  return { deleted: changes > 0, record }
+}
+
+function getReportsByVisit(visitId) {
+  return db.prepare('SELECT * FROM visit_reports WHERE visit_id = ? ORDER BY created_at ASC').all(visitId)
+}
+
+function createVisitReport(data) {
+  const stmt = db.prepare(`
+    INSERT INTO visit_reports (visit_id, file_path, file_name, file_type, label)
+    VALUES (@visit_id, @file_path, @file_name, @file_type, @label)
+  `)
+  const result = stmt.run(data)
+  return db.prepare('SELECT * FROM visit_reports WHERE id = ?').get(result.lastInsertRowid)
+}
+
+function deleteVisitReport(id) {
+  const report = db.prepare('SELECT * FROM visit_reports WHERE id = ?').get(id)
+  const changes = db.prepare('DELETE FROM visit_reports WHERE id = ?').run(id).changes
+  return { deleted: changes > 0, report }
+}
+
 module.exports = {
   searchPatients,
   getAllPatients,
@@ -170,4 +332,15 @@ module.exports = {
   deleteVisit,
   getDoctorProfile,
   saveDoctorProfile,
+  getAllMedicines,
+  getMedicine,
+  createMedicine,
+  updateMedicine,
+  deleteMedicine,
+  getRecordsByPatient,
+  createRecord,
+  deleteRecord,
+  getReportsByVisit,
+  createVisitReport,
+  deleteVisitReport,
 }

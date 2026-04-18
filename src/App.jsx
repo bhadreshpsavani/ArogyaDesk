@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import PatientProfile from './pages/PatientProfile'
 import NewPatient from './pages/NewPatient'
 import Setup from './pages/Setup'
+import Settings from './pages/Settings'
 
 export default function App() {
   const [profileChecked, setProfileChecked] = useState(false)
@@ -35,6 +36,10 @@ export default function App() {
       <Route
         path="/patient/:id"
         element={hasProfile ? <PatientProfile /> : <Navigate to="/setup" replace />}
+      />
+      <Route
+        path="/settings"
+        element={hasProfile ? <Settings /> : <Navigate to="/setup" replace />}
       />
     </Routes>
   )

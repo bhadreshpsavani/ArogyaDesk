@@ -47,8 +47,12 @@ export default function EditPatientModal({ patient, onSave, onClose }) {
         notes: form.notes.trim() || null,
       })
       onSave(updated)
-    } catch {
-      setError('Failed to update patient.')
+    } catch (err) {
+      if (err.message.includes('DUPLICATE_PATIENT')) {
+        setError('A patient with this exact name and phone number already exists.')
+      } else {
+        setError('Failed to update patient.')
+      }
       setSaving(false)
     }
   }

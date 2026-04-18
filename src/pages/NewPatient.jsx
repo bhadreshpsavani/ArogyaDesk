@@ -43,8 +43,12 @@ export default function NewPatient() {
         notes: form.notes.trim() || null,
       })
       navigate(`/patient/${patient.id}`)
-    } catch {
-      setError('Failed to save patient. Please try again.')
+    } catch (err) {
+      if (err.message.includes('DUPLICATE_PATIENT')) {
+        setError('A patient with this exact name and phone number already exists.')
+      } else {
+        setError('Failed to save patient. Please try again.')
+      }
       setSaving(false)
     }
   }
