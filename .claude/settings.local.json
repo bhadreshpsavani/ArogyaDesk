@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Bash(npm install *)",
+      "Bash(npx electron-rebuild *)",
+      "Bash(npm run *)"
+    ]
+  }
+}

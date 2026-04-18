@@ -1,0 +1,147 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s;
+}
+
+.item.open {
+  border-color: var(--primary);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.row:hover {
+  background: var(--bg);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chevron {
+  color: var(--text-muted);
+  font-size: 12px;
+  width: 16px;
+}
+
+.date {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.diagnosis {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.amount {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--primary);
+}
+
+.discount {
+  font-size: 12px;
+  color: var(--success);
+}
+
+.detail {
+  border-top: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fieldLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.fieldValue {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.billing {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.billingRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+
+.billingRow:last-child {
+  border-bottom: none;
+}
+
+.total {
+  font-weight: 700;
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.detailActions {
+  display: flex;
+  gap: 10px;
+  padding-top: 4px;
+  flex-wrap: wrap;
+}
+
+.pdfBtn {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #86efac;
+}
+
+.pdfBtn:hover:not(:disabled) {
+  background: #dcfce7;
+}
+
+.pdfBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,0 +1,111 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #dbeafe 0%, #ede9fe 100%);
+  padding: 24px;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(37, 99, 235, 0.12);
+  width: 100%;
+  max-width: 480px;
+  overflow: hidden;
+}
+
+.top {
+  background: var(--primary);
+  padding: 32px 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.logo {
+  font-size: 36px;
+}
+
+.appName {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.3px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  margin-top: 2px;
+}
+
+.form {
+  padding: 28px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.photoSection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.photoWrap {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 2px dashed var(--border);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s;
+  background: var(--bg);
+}
+
+.photoWrap:hover {
+  border-color: var(--primary);
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  font-size: 28px;
+}
+
+.photoPlaceholder small {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.error {
+  background: var(--danger-light);
+  color: var(--danger);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  border: 1px solid #fca5a5;
+}
+
+.submitBtn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+  font-size: 16px;
+}

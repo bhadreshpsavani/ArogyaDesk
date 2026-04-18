@@ -1,0 +1,7 @@
+node_modules/
+dist/
+dist-electron/
+*.db
+*.db-wal
+*.db-shm
+.env
