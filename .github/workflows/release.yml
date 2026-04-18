@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   release-windows:
     runs-on: windows-latest
@@ -29,13 +32,9 @@ jobs:
         run: npm run build
 
       - name: Package installer
-        run: npx electron-builder --win
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx electron-builder --win --publish never
 
-      - name: Upload installer
+      - name: Upload installer to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: dist-electron/*.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
