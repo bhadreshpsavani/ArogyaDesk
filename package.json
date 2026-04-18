@@ -28,16 +28,19 @@
   "build": {
     "appId": "com.arogyadesk.app",
     "productName": "ArogyaDesk",
+    "icon": "assets/icon",
     "directories": {
       "output": "dist-electron"
     },
     "files": [
       "dist/**/*",
       "electron/**/*",
+      "assets/**/*",
       "node_modules/better-sqlite3/**/*"
     ],
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/icon.ico"
     },
     "nsis": {
       "oneClick": false,

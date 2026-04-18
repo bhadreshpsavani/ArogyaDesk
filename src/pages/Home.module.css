@@ -6,15 +6,15 @@
 }
 
 .header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #0f2a35 0%, #134e5e 60%, #1a3a6e 100%);
+  border-bottom: none;
   padding: 0 24px;
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  box-shadow: var(--shadow);
+  box-shadow: 0 2px 12px rgba(8,145,178,0.25);
 }
 
 .brand {
@@ -30,7 +30,7 @@
 .brandName {
   font-size: 18px;
   font-weight: 700;
-  color: var(--primary);
+  color: #ffffff;
   letter-spacing: -0.3px;
   line-height: 1.2;
 }
@@ -38,7 +38,7 @@
 .clinicName {
   display: block;
   font-size: 11px;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.6);
   font-weight: 400;
 }
 
@@ -46,17 +46,18 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--bg);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
   border-radius: 10px;
   padding: 6px 12px 6px 6px;
   cursor: pointer;
   transition: all 0.15s;
+  backdrop-filter: blur(4px);
 }
 
 .doctorBtn:hover {
-  border-color: var(--primary);
-  background: var(--primary-light);
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.4);
 }
 
 .doctorAvatar {
@@ -93,19 +94,19 @@
 .doctorName {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text);
+  color: #ffffff;
   white-space: nowrap;
 }
 
 .doctorSpec {
   font-size: 11px;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.65);
   white-space: nowrap;
 }
 
 .editIcon {
   font-size: 13px;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.5);
   margin-left: 2px;
 }
 

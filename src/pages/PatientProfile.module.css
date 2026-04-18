@@ -14,20 +14,30 @@
 }
 
 .header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #0f2a35 0%, #134e5e 60%, #1a3a6e 100%);
+  border-bottom: none;
   padding: 10px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  box-shadow: var(--shadow);
+  box-shadow: 0 2px 12px rgba(8,145,178,0.25);
 }
 
 .headerActions {
   display: flex;
   gap: 10px;
   align-items: center;
+}
+
+.header :global(.btn-secondary) {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.25);
+  color: #fff;
+}
+
+.header :global(.btn-secondary):hover {
+  background: rgba(255,255,255,0.2);
 }
 
 .body {
