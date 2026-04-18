@@ -205,4 +205,119 @@ If you need help, keep this information ready:
 
 ## For Developers
 
-This README is written for end users. Developer setup, packaging, and source structure should be documented separately if needed.
+### Stack
+
+- Electron for the desktop shell
+- React with Vite for the renderer
+- better-sqlite3 for local data storage
+- react-router-dom with `HashRouter` for navigation
+
+### Project Structure
+
+```text
+electron/
+  main.js        Electron main process, IPC handlers, window setup
+  preload.js     Context bridge exposing window.electronAPI
+  database.js    SQLite schema and database operations
+
+src/
+  main.jsx       React entry point
+  App.jsx        Route definitions
+  index.css      Global styles
+  pdfTemplate.js Receipt PDF template
+  pages/         Screen-level components
+  components/    Reusable UI components
+```
+
+### Local Development
+
+1. Install Node.js 20 or later.
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the app in development mode:
+
+```bash
+npm run dev
+```
+
+This starts:
+
+- the Vite dev server
+- the Electron app pointed at the local Vite URL
+
+### Useful Scripts
+
+```bash
+npm install      # install dependencies
+npm run dev      # run Vite + Electron in development
+npm run build    # build the renderer into dist/
+npm run dist     # build and package the Windows installer
+npm run preview  # preview the Vite production build
+```
+
+### Native Dependency Notes
+
+This project uses `better-sqlite3`, which is a native dependency. The `postinstall` script runs:
+
+```bash
+electron-builder install-app-deps
+```
+
+This helps keep native modules aligned with the Electron version used for packaging.
+
+### Packaging
+
+Windows packaging is handled by `electron-builder`.
+
+- Output folder: `dist-electron/`
+- Windows target: `nsis`
+- App icon: `assets/icon.ico`
+
+Create a packaged build with:
+
+```bash
+npm run dist
+```
+
+### Database
+
+The app stores data in a local SQLite database created inside Electron's user data directory.
+
+- Database filename: `arogyadesk.db`
+- Tables:
+  - `patients`
+  - `visits`
+  - `doctor_profile`
+
+Current behavior is offline-first and single-user. There is no multi-device sync layer.
+
+### IPC Surface
+
+The renderer accesses native functionality through `window.electronAPI`.
+
+Current groups include:
+
+- patient CRUD and search
+- visit CRUD
+- doctor profile read and save
+- file selection and file opening
+- local image reading
+- PDF generation
+
+### Release Notes
+
+GitHub Actions are configured for:
+
+- CI builds on pushes and pull requests
+- Windows release packaging on tags like `v0.1.6`
+
+### Current Limitations
+
+- No automated test suite yet
+- Single-user local workflow only
+- Attached files are referenced by path, not copied into app storage
+- Build verification may require a full local or CI environment because some sandboxes block Vite or esbuild child processes
